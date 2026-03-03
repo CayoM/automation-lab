@@ -5,7 +5,6 @@
 
   vars:
     apache_context: "user1"
-    page_username: "user1"
 
   tasks:
     - name: Install Apache2
@@ -38,9 +37,9 @@
           <html lang="en">
           <head>
             <meta charset="UTF-8">
-            <title>Welcome {{ page_username }}</title>
+            <title>Welcome {{ apache_context }}</title>
           </head>
           <body>
-            <h1>Welcome, {{ page_username }}!</h1>
+            <h1>Welcome, {{ apache_context }}!</h1>
           </body>
           </html>
