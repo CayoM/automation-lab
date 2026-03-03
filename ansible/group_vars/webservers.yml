@@ -1,0 +1,5 @@
+---
+# Override these values via --extra-vars on the command line, e.g.:
+#   ansible-playbook ... --extra-vars "webserver_user_name=user2 webserver_welcome_text='Hello user2'"
+webserver_user_name: "user1"
+webserver_welcome_text: "Welcome {{ webserver_user_name }}"

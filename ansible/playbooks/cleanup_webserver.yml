@@ -1,0 +1,23 @@
+---
+- name: Cleanup webserver setup
+  hosts: webservers
+  become: true
+
+  tasks:
+    - name: Remove the user context directory
+      ansible.builtin.file:
+        path: /var/www/html/{{ webserver_user_name }}
+        state: absent
+
+    - name: Stop and disable Apache2
+      ansible.builtin.service:
+        name: apache2
+        state: stopped
+        enabled: false
+
+    - name: Uninstall Apache2
+      ansible.builtin.apt:
+        name: apache2
+        state: absent
+        purge: true
+        autoremove: true

@@ -1,0 +1,29 @@
+---
+- name: Install Apache2
+  ansible.builtin.apt:
+    name: apache2
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Ensure Apache2 is started and enabled
+  ansible.builtin.service:
+    name: apache2
+    state: started
+    enabled: true
+
+- name: Create directory for the user context path
+  ansible.builtin.file:
+    path: /var/www/html/{{ webserver_user_name }}
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: "0755"
+
+- name: Deploy the welcome HTML page
+  ansible.builtin.template:
+    src: index.html.j2
+    dest: /var/www/html/{{ webserver_user_name }}/index.html
+    owner: www-data
+    group: www-data
+    mode: "0644"
