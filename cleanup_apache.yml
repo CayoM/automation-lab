@@ -1,0 +1,25 @@
+---
+- name: Remove Apache2 and user welcome page
+  hosts: all
+  become: true
+
+  vars:
+    apache_context: "user1"
+
+  tasks:
+    - name: Remove URL context directory
+      ansible.builtin.file:
+        path: /var/www/html/{{ apache_context }}
+        state: absent
+
+    - name: Stop and disable Apache2
+      ansible.builtin.service:
+        name: apache2
+        state: stopped
+        enabled: false
+      ignore_errors: true
+
+    - name: Remove Apache2
+      ansible.builtin.package:
+        name: apache2
+        state: absent

@@ -1,0 +1,45 @@
+---
+- name: Install Apache2 and deploy user welcome page
+  hosts: all
+  become: true
+
+  vars:
+    apache_context: "user1"
+
+  tasks:
+    - name: Install Apache2
+      ansible.builtin.package:
+        name: apache2
+        state: present
+
+    - name: Ensure Apache2 is started and enabled
+      ansible.builtin.service:
+        name: apache2
+        state: started
+        enabled: true
+
+    - name: Create directory for URL context
+      ansible.builtin.file:
+        path: /var/www/html/{{ apache_context }}
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: "0755"
+
+    - name: Deploy welcome page
+      ansible.builtin.copy:
+        dest: /var/www/html/{{ apache_context }}/index.html
+        owner: www-data
+        group: www-data
+        mode: "0644"
+        content: |
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <title>Welcome {{ apache_context }}</title>
+          </head>
+          <body>
+            <h1>Welcome, {{ apache_context }}!</h1>
+          </body>
+          </html>
